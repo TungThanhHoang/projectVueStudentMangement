@@ -3,8 +3,8 @@
     class="notify-wrapper"
     :style="{
       color:
-        (status === statusNotify[success_add_student])
-        | statusNotify[success_update_add_student]
+        (status === statusNotify['success_add_student'])
+        | statusNotify['success_update_add_student']
           ? '#2a7f62'
           : 'red',
     }"
@@ -47,7 +47,7 @@ $color-button: #2a7f62;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   z-index: 100;
   background-color: #fff;
-  font-size: 15px;
+  font-size: 14px;
   h4 {
     margin: 0;
   }

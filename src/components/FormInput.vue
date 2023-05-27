@@ -4,26 +4,36 @@
       <div class="form-row">
         <div class="form-input">
           <label for="name">Họ và tên</label>
-          <input type="text" v-model="name" />
+          <input type="text" v-model="studentForm.name" />
         </div>
         <div class="form-input">
           <label for="birthday">Ngày Sinh</label>
-          <input type="date" v-model="birthday" />
+          <input type="date" v-model="studentForm.birthday" />
         </div>
         <div class="form-input">
           <label for="phone">Số điện thoại</label>
-          <input type="text" v-model="phone" />
+          <input type="text" v-model.number="studentForm.phone" />
         </div>
         <div class="form-input form-input-gender">
           <label for="phone">Giới tính</label>
           <div class="form-gender-wrapper">
             <div class="form-select-gender">
               <label for="male">Nam</label>
-              <input type="radio" name="gender" value="Nam" v-model="gender" />
+              <input
+                type="radio"
+                name="gender"
+                value="Nam"
+                v-model="studentForm.gender"
+              />
             </div>
             <div class="form-select-gender">
               <label for="female">Nữ</label>
-              <input type="radio" name="gender" value="Nữ" v-model="gender" />
+              <input
+                type="radio"
+                name="gender"
+                value="Nữ"
+                v-model="studentForm.gender"
+              />
             </div>
           </div>
         </div>
@@ -31,28 +41,28 @@
       <div class="form-row">
         <div class="form-input">
           <label for="text">Thành phố</label>
-          <select v-model="city">
+          <select v-model="studentForm.city">
             <option value="Hà Nội">Hà Nội</option>
             <option value="Đà Nẵng">Đà Nẵng</option>
           </select>
         </div>
         <div class="form-input">
           <label for="text">Quận/Huyện</label>
-          <select v-model="district">
-            <option value="Hà nội">Hà Nội</option>
+          <select v-model="studentForm.district">
+            <option value="Hà Nội">Hà Nội</option>
             <option value="Đà Nẵng">Đà Nẵng</option>
           </select>
         </div>
         <div class="form-input">
           <label for="text">Phường/Xã</label>
-          <select v-model="ward">
-            <option value="Hà nội">Hà Nội</option>
+          <select v-model="studentForm.ward">
+            <option value="Hà Nội">Hà Nội</option>
             <option value="Đà Nẵng">Đà Nẵng</option>
           </select>
         </div>
         <div class="form-input">
           <label for="text">Số nhà</label>
-          <input type="text" v-model="address" />
+          <input type="text" v-model="studentForm.address" />
         </div>
       </div>
       <div class="form-row">
@@ -60,23 +70,23 @@
           <div>
             <div class="form-select-radio">
               <div class="form-select-checkbox">
-                <input type="checkbox" v-model="isGraduate" />
+                <input type="checkbox" v-model="studentForm.isGraduate" />
                 <label for="">Đã tốt nghiệp</label>
               </div>
-              <template v-if="isGraduate">
+              <template v-if="studentForm.isGraduate">
                 <div class="option-checkbox">
                   <div class="form-input">
                     <label for="text">Tên trường</label>
-                    <input type="text" v-model="nameUniversity" />
+                    <input type="text" v-model="studentForm.nameUniversity" />
                   </div>
                   <div class="form-graduate-number">
                     <div class="form-input">
                       <label for="text">Năm tốt nghiệp</label>
-                      <input type="text" v-model="yearGraduate" />
+                      <input type="text" v-model="studentForm.yearGraduate" />
                     </div>
                     <div class="form-input">
                       <label for="text">GPA</label>
-                      <input type="text" v-model="Gpa" />
+                      <input type="text" v-model="studentForm.Gpa" />
                     </div>
                   </div>
                 </div>
@@ -88,22 +98,7 @@
       <button
         type="submit"
         class="button-submit-form"
-        @click.prevent="
-          addStudent({
-            name,
-            birthday,
-            phone,
-            gender,
-            city,
-            district,
-            ward,
-            address,
-            isGraduate,
-            nameUniversity,
-            yearGraduate,
-            Gpa
-          })
-        "
+        @click.prevent="handleAddStudent"
       >
         Lưu
       </button>
@@ -114,25 +109,33 @@
 <script>
 export default {
   name: "FormInput",
-  data() {
-    return {
-      name: "",
-      birthday: "",
-      phone: "",
-      gender: "",
-      city: "",
-      district: "",
-      ward: "",
-      address: "",
-      isGraduate: false,
-      nameUniversity: "",
-      yearGraduate: 0,
-      Gpa: 0,
-    };
-  },
   props: {
-    students: Array,
-    addStudent: Function,
+    studentDataModel: Object,
+    studentModel: Object,
+  },
+  computed: {
+    studentForm: function () {
+      return {
+        id: this.studentModel.id,
+        name: this.studentModel.name,
+        birthday: this.studentModel.birthday,
+        phone: this.studentModel.phone,
+        gender: this.studentModel.gender,
+        city: this.studentModel.city,
+        district: this.studentModel.district,
+        ward: this.studentModel.ward,
+        address: this.studentModel.address,
+        isGraduate: this.studentModel.isGraduate,
+        nameUniversity: this.studentModel.nameUniversity,
+        yearGraduate: this.studentModel.yearGraduate,
+        Gpa: this.studentModel.Gpa,
+      };
+    },
+  },
+  methods: {
+    handleAddStudent: function () {
+      this.$emit("handle-add-student", this.studentForm);
+    },
   },
 };
 </script>
@@ -168,7 +171,7 @@ $color-button: #2a7f62;
           color: $color-text;
         }
         input {
-          height: 30px;
+          height: 35px;
           outline: none;
           border: 1px solid $color-input;
           border-radius: 4px;

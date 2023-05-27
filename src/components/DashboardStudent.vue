@@ -19,7 +19,7 @@
           class="table-dashboard-item"
           v-for="(item, index) in students"
           :key="index"
-          @click="studentViewModal(true)"
+          @click="openStudentModal(item)"
         >
           <div>{{ index + 1 }}</div>
           <div>{{ item.name }}</div>
@@ -46,8 +46,7 @@
 <script>
 export default {
   props: {
-    students: Array,
-    studentViewModal: Function
+    students: Array
   },
   data() {
     return {
@@ -55,6 +54,12 @@ export default {
         status_not_graduate: 'status-not-graduate'
     }
   },
+  methods: {
+    openStudentModal: function(item) {
+      this.$emit('handle-get-student-modal', item);
+      this.$emit('handle-show-student-modal', true);
+    }
+  }
 };
 </script>
 
@@ -66,12 +71,12 @@ $color-input: #eee;
 $color-button: #2a7f62;
 .dashboard-wrapper {
   margin-top: 50px;
-  margin-bottom: 100px;
   h3 {
     color: $color-text;
     font-weight: 600;
   }
   .table-dashboard {
+    margin-top: 20px;
     .table-dashboard-header {
       display: grid;
       text-align: center;
